@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <form id="registerForm">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <label for="password_again">Password again:</label><br>
+        <input type="password_again" id="password_again" name="password_again" required><br>
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const password_again = document.getElementById('password_again').value;
+        if(password != password_again){
+            alert("Passwords do not match");
+            return
+        }
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+                credentials: 'include' // Important for cookies/session
+            });
+
+            if (response.redirected) {
+                // Handle redirect case
+                window.location.href = response.url;
+            } else {
+                const text = await response.text();
+                if (response.ok) {
+                    alert("Success: " + text);
+                    // Optionally redirect after successful login
+                    window.location.href = '/';
+                } else {
+                    alert("Error: " + text);
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Login failed!');
+        }
+    });
+</script>
+</body>
+</html>

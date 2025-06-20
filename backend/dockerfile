@@ -1,0 +1,19 @@
+FROM python:3.9-slim
+
+ENV PWD=/usr/src
+
+WORKDIR $PWD
+
+# Install system dependencies required for psycopg2
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libpq-dev \
+    gcc \
+    python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+EXPOSE 5000

@@ -192,3 +192,68 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+data
+data/
+
+# Node.js / React
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnp*
+.pnp.js
+dist/
+build/
+.cache/
+.DS_Store
+.eslintcache
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.idea/
+.vscode/
+
+# Python / Flask
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.pot
+*.sqlite3
+
+# Database
+*.db
+*.sqlite
+
+# Secrets
+.env
+*.key
+*.pem
+credentials.json
+
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
