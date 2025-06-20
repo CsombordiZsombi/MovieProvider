@@ -6,6 +6,9 @@ function NavBar() {
             <div className="nav-link">
                 <Link to="/"> Home </Link>
             </div>
+            <div className="nav-link">
+                <Link to="/login"> Login </Link>
+            </div>
         </nav>
     )
 }

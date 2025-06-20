@@ -1,14 +1,16 @@
 import RegisterOrLogin from "../components/RegisterOrLogin"
 import NavBar from "../components/NavBar";
-import { useState } from "react"
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
     
-    const [loggedIn, setLoggedIn] = useState(false);
+    const {user} = useAuth()
 
     return (
     <div>
-        {loggedIn == false && <RegisterOrLogin/>}
+        <NavBar></NavBar>
+        {!user && <RegisterOrLogin/>}
+        {user && <p> Letsgo </p>}
     </div>
     );
 }

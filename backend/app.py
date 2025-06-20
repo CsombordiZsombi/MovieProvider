@@ -39,6 +39,9 @@ def create_app():
     from backend.endpoints.login_check import LoginCheck
     api.add_resource(LoginCheck, '/api/login_check')
 
+    from backend.endpoints.logout import Logout
+    api.add_resource(Logout, '/api/logout')
+
     """@app.route('/')
     def hello():
         if session.get("logged_in"):
