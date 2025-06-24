@@ -1,7 +1,6 @@
-from flask import Flask, render_template, session
+from flask import Flask, request
 from flask_restful import Api
 from datetime import timedelta
-from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from backend.db.orm import db
 from sqlalchemy import inspect
@@ -11,12 +10,34 @@ def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
     app.secret_key = "secret" # TODO: replace with real secret key
-    api = Api(app)
-    app.permanent_session_lifetime = timedelta(seconds=10)
+    
+    app.permanent_session_lifetime = timedelta(days=1)
     # Configure Bcrypt
     app.bcrypt = Bcrypt(app)
-    # CORS for frontend
-    CORS(app, supports_credentials=True)
+
+    # Update session configuration
+    app.config.update(
+        SESSION_COOKIE_SECURE=False,  # Disable in development
+        SESSION_COOKIE_SAMESITE='Lax',  # Works better for private networks
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_DOMAIN=None  # Don't restrict domain
+    )
+
+    # Update CORS configuration
+    CORS(app, 
+        supports_credentials=True,
+        resources={
+            r"/api/*": {  # Only apply to API routes
+                "origins": [
+                    "http://movieprovider-frontend-1:8080",  # Docker service name
+                    "http://localhost:8080"  # For local development
+                ],
+                "allow_headers": ["*"],
+                "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                "expose_headers": ["Set-Cookie"]
+            }
+        }
+    )
 
     # Configure Flask-SQLAlchemy
     app.config["SQLALCHEMY_DATABASE_URI"] = \
@@ -30,31 +51,30 @@ def create_app():
             from backend.db.init_db import init_db
             init_db()
 
-    from backend.endpoints.login import Login
+    api = Api(app)
+    from backend.endpoints.auth.login import Login
     api.add_resource(Login, '/api/login')
 
-    from backend.endpoints.register import Register
+    from backend.endpoints.auth.register import Register
     api.add_resource(Register, '/api/register')
 
-    from backend.endpoints.login_check import LoginCheck
+    from backend.endpoints.auth.login_check import LoginCheck
     api.add_resource(LoginCheck, '/api/login_check')
 
-    from backend.endpoints.logout import Logout
+    from backend.endpoints.auth.logout import Logout
     api.add_resource(Logout, '/api/logout')
 
-    """@app.route('/')
-    def hello():
-        if session.get("logged_in"):
-            return f"Logged in with username:{session['username']}"
-        return "Hello from Dockerized Flask!"
+    from backend.endpoints.movies.list_movies import ListMovies
+    api.add_resource(ListMovies, '/api/movies/list')
 
-    @app.get('/login')
-    def login_page():
-        return render_template("login.html")
+    from backend.utils.forward_request import forward_request
+    @app.route('/<path:path>')
+    def catch_all(path):
+        return forward_request(request, f'{app.config["FRONTEND_URL"]}/{path}')
 
-    @app.get('/register')
-    def register_page():
-        return render_template("register.html")"""
+    @app.errorhandler(404)
+    def not_found(e):
+        return forward_request(request, app.config["FRONTEND_URL"])
     
     return app
     

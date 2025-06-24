@@ -6,5 +6,6 @@ class LoginCheck(BaseResource):
         return ({
             'logged_in': session.get('logged_in', False),
             'username': session.get('username'),
-            'user_id': session.get('user_id')
+            'user_id': session.get('user_id'),
+            'email': session.get('email')
         }, 200)

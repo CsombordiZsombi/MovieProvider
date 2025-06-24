@@ -1,0 +1,91 @@
+.login-prompt-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #121212;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-prompt-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+}
+
+.prompt-icon {
+    margin-bottom: 1.5rem;
+}
+
+.prompt-icon svg {
+    stroke-width: 1.5;
+}
+
+.prompt-message {
+    color: #f0f0f0;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.prompt-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.prompt-button {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.prompt-button.primary {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.prompt-button.primary:hover {
+    background-color: #357abd;
+}
+
+.prompt-button.secondary {
+    background-color: transparent;
+    color: #4a90e2;
+    border: 1px solid #4a90e2;
+}
+
+.prompt-button.secondary:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+.prompt-footer {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.guest-link {
+    background: none;
+    border: none;
+    color: #4a90e2;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9rem;
+    margin-left: 0.25rem;
+}
+
+.guest-link:hover {
+    color: #357abd;
+}
